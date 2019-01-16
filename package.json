@@ -1,0 +1,32 @@
+{
+  "name": "crc-calculator",
+  "version": "1.0.0",
+  "description": "Website and CLI for error detection with Cyclic Redundancy Checks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scriptim/crc-calculator.git"
+  },
+  "keywords": [
+    "crc",
+    "cyclic",
+    "redundancy",
+    "check",
+    "error",
+    "detection",
+    "correction",
+    "code",
+    "network",
+    "algorithm",
+    "website"
+  ],
+  "author": "Scriptim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Scriptim/crc-calculator/issues"
+  },
+  "homepage": "https://github.com/Scriptim/crc-calculator#readme"
+}
