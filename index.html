@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Website for error detection with Cyclic Redundancy Checks">
+  <meta name="keywords" content="crc,cyclic,redundancy,check,error,detection,correction,code,network,algorithm,website">
+  <meta name="author" content="Scriptim">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>CRC Calculator</title>
+
+  <script src="./crc.js"></script>
+</head>
+
+<body>
+  <main>
+    <h1>CRC Calculator</h1>
+    <form>
+      <input name="data" type="text" pattern="^[01]+$" placeholder="data (binary)" autocomplete="off" autofocus required>
+      <br>
+      <input name="generator" type="text" pattern="^1[01]*$" placeholder="generator polynomial (binary)" autocomplete="off" required>
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+    <pre id="divisionSteps"></pre>
+    <br>
+    <pre id="codeword"></pre>
+  </main>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search)
+    const data = urlParams.get('data')
+    const generator = urlParams.get('generator')
+    if (data !== undefined && generator !== undefined) {
+      document.getElementsByName('data')[0].value = data
+      document.getElementsByName('generator')[0].value = generator
+      const result = crc(data, generator)
+      document.getElementById('divisionSteps').innerHTML = result.divisionSteps.join('\n')
+      document.getElementById('codeword').innerHTML = result.codeword
+    }
+  </script>
+</body>
+
+</html>
