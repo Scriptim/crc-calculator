@@ -73,6 +73,11 @@ if (args._.find(arg => /^[^01]$/.test(arg)) !== undefined) {
   process.exit(1)
 }
 
+if (args._[1].startsWith('0')) {
+  console.error('Generator polynomial must not start with zero.')
+  process.exit(1)
+}
+
 const crc = require('./crc.js')
 const encoded = crc.crc(args._[0], args._[1])
 
