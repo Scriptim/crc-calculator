@@ -15,6 +15,10 @@ const crc = (data, generator) => {
   }
 
   step(`${remainder} : ${generator}`)
+
+  indent = remainder.indexOf('1')
+  remainder = remainder.substring(indent)
+
   while (remainder.length >= generator.length) {
     step(generator)
 
