@@ -8,19 +8,19 @@ const args = require('minimist')(process.argv.slice(2), {
   boolean: [
     'help',
     'version',
-    'concise'
+    'short'
   ],
   alias: {
     g: 'generator',
     h: 'help',
     v: 'version',
-    c: 'concise'
+    s: 'short'
   },
   default: {
     generator: null,
     help: false,
     version: false,
-    concise: false
+    short: false
   },
   unknown: arg => {
     if (arg.startsWith('-')) {
@@ -34,7 +34,7 @@ const usageInfo = `CRC Calculator
 
 Usage:
   node index.js --help | --version
-  node index.js <data> (<generator> | --generator <generator name>) [--concise]
+  node index.js <data> (<generator> | --generator <generator name>) [--short]
 
 Positional Arguments:
   data       Binary data string.
@@ -43,7 +43,7 @@ Positional Arguments:
 Options:
   -h --help       Show this help page.
   -v --version    Show version.
-  -c --concise    Only show the resulting codeword.
+  -s --short      Only show the resulting codeword.
   -g --generator  Name of a predefined CRC polynomial.`
 
 if (args.help) {
@@ -81,7 +81,7 @@ if (args._[1].startsWith('0')) {
 const crc = require('./crc.js')
 const encoded = crc.crc(args._[0], args._[1])
 
-if (args.concise) {
+if (args.short) {
   console.log(encoded.codeword)
 } else {
   console.log(`${encoded.divisionSteps.join('\n')}\n\n${encoded.codeword}`)
