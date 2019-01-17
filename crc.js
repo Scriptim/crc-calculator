@@ -1,4 +1,4 @@
-const crc = (data, generator) => {
+const crc = (data, generator, check) => {
   const crc = {
     data,
     generator,
@@ -7,7 +7,7 @@ const crc = (data, generator) => {
 
   const degree = generator.length - 1
 
-  let remainder = data + '0'.repeat(degree)
+  let remainder = check === true ? data : data + '0'.repeat(degree)
   let indent = 0
 
   const step = str => {
@@ -36,7 +36,12 @@ const crc = (data, generator) => {
   }
 
   crc.remainder = remainder
-  crc.codeword = data + remainder
+
+  if (check === true) {
+    crc.error = remainder.includes('1')
+  } else {
+    crc.codeword = data + remainder
+  }
 
   return crc
 }
