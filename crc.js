@@ -40,7 +40,7 @@ const crc = (data, generator, check) => {
   if (check === true) {
     crc.error = remainder.includes('1')
   } else {
-    crc.codeword = data + remainder
+    crc.codeword = data + remainder.padStart(degree, '0')
   }
 
   return crc
