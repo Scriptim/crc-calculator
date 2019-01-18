@@ -20,7 +20,9 @@
   <main>
     <h1>CRC Calculator</h1>
     <form>
-      <input name="data" type="text" pattern="^[01]+$" placeholder="data (binary)" autocomplete="off" autofocus required>
+      <input name="data" type="text" pattern="^[01]+$" placeholder="data (binary)" autocomplete="off" required>
+      <br>
+      <input name="codeword" type="text" pattern="^[01]+$" placeholder="codeword (binary)" autocomplete="off" required>
       <br>
       <input name="generator" type="text" pattern="^1[01]*$" placeholder="generator polynomial (binary)" autocomplete="off" required>
       <br>
@@ -28,19 +30,41 @@
     </form>
     <pre id="divisionSteps"></pre>
     <br>
-    <pre id="codeword"></pre>
+    <pre id="result"></pre>
   </main>
 
   <script>
+    const dataIn = document.getElementsByName('data')[0]
+    const codewordIn = document.getElementsByName('codeword')[0]
+    const generatorIn = document.getElementsByName('generator')[0]
+    const divisionStepsOut = document.getElementById('divisionSteps')
+    const resultOut = document.getElementById('result')
+
+    dataIn.oninput = dataIn.onchange = _ => {
+      const hasData = dataIn.value !== ''
+      codewordIn.disabled = hasData
+      codewordIn.required = !hasData
+    }
+
+    codewordIn.oninput = codewordIn.onchange = _ => {
+      const hasCodeword = codewordIn.value !== ''
+      dataIn.disabled = hasCodeword
+      dataIn.required = !hasCodeword
+    }
+
     const urlParams = new URLSearchParams(window.location.search)
     const data = urlParams.get('data')
+    const codeword = urlParams.get('codeword')
     const generator = urlParams.get('generator')
-    if (data !== undefined && generator !== undefined) {
-      document.getElementsByName('data')[0].value = data
-      document.getElementsByName('generator')[0].value = generator
-      const result = crc(data, generator)
-      document.getElementById('divisionSteps').innerHTML = result.divisionSteps.join('\n')
-      document.getElementById('codeword').innerHTML = result.codeword
+
+    if (data !== null && generator !== null) {
+      const result = crc(data, generator, false)
+      divisionStepsOut.innerHTML = result.divisionSteps.join('\n')
+      resultOut.innerHTML = result.codeword
+    } else if (codeword !== null && generator !== null) {
+      const result = crc(codeword, generator, true)
+      divisionStepsOut.innerHTML = result.divisionSteps.join('\n')
+      resultOut.innerHTML = result.error ? 'Error' : 'No Error'
     }
   </script>
 </body>

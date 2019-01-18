@@ -21,6 +21,15 @@ input {
   min-width: 20em;
 }
 
+input:disabled {
+  color: lightgray;
+  border-color: lightgray;
+}
+
+input:disabled::placeholder {
+  color: lightgray;
+}
+
 button {
   margin: 0.7em;
   padding: 0.6em 1em;
