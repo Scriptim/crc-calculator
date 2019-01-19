@@ -22,9 +22,9 @@ const crc = (data, generator, check) => {
   while (remainder.length >= generator.length) {
     step(generator)
 
-    const minuend = parseInt(remainder.substring(0, generator.length), 2)
-    const subtrahend = parseInt(generator, 2)
-    const difference = (minuend ^ subtrahend).toString(2).padStart(generator.length, '0')
+    const difference = generator.split('')
+      .map((val, i) => val === remainder[i] ? '0' : '1').join('')
+      .toString(2).padStart(generator.length, '0')
 
     remainder = difference + remainder.substring(generator.length)
     step('-'.repeat(generator.length))
