@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const { crc, crcPolynomials } = require('./crc.js')
+
 const args = require('minimist')(process.argv.slice(2), {
   string: [
     '_',
@@ -9,21 +11,24 @@ const args = require('minimist')(process.argv.slice(2), {
     'help',
     'check',
     'version',
-    'short'
+    'short',
+    'generators'
   ],
   alias: {
     g: 'generator',
     c: 'check',
     h: 'help',
     v: 'version',
-    s: 'short'
+    s: 'short',
+    l: 'generators'
   },
   default: {
     generator: null,
     check: false,
     help: false,
     version: false,
-    short: false
+    short: false,
+    generators: false
   },
   unknown: arg => {
     if (arg.startsWith('-')) {
@@ -36,7 +41,7 @@ const args = require('minimist')(process.argv.slice(2), {
 const usageInfo = `CRC Calculator
 
 Usage:
-  node index.js --help | --version
+  node index.js --help | --version | --generators
   node index.js <data> (<generator> | --generator <generator name>) [--check] [--short]
 
 Positional Arguments:
@@ -44,11 +49,12 @@ Positional Arguments:
   generator  Binary string encoding the CRC polynomial.
 
 Options:
-  -h --help       Show this help page.
-  -v --version    Show version.
-  -s --short      Only show the resulting codeword.
-  -c --check      Check a codeword for errors.
-  -g --generator  Name of a predefined CRC polynomial.`
+  -h --help        Show this help page.
+  -v --version     Show version.
+  -s --short       Only show the resulting codeword.
+  -c --check       Check a codeword for errors.
+  -g --generator   Name of a predefined CRC polynomial.
+  -l --generators  Show a list of predefined CRC polynomials.`
 
 if (args.help) {
   console.log(usageInfo)
@@ -60,16 +66,23 @@ if (args.version) {
   process.exit(0)
 }
 
+if (args.generators) {
+  console.log(Object.keys(crcPolynomials).join(', '))
+  process.exit(0)
+}
+
 if (!(args._.length === 2 && args.generator === null ||
   args._.length === 1 && args.generator !== null)) {
   console.error(usageInfo)
   process.exit(1)
 }
 
-// TODO:
 if (args.generator !== null) {
-  console.error('--generator option is not implemented yet')
-  process.exit(1)
+  if (!Object.keys(crcPolynomials).includes(args.generator.toLowerCase())) {
+    console.error('Unknown generator name. Use --generators for a list of generators.')
+    process.exit(1)
+  }
+  args._.push(crcPolynomials[args.generator.toLowerCase()])
 }
 
 if (args._.find(arg => /^[^01]$/.test(arg)) !== undefined) {
@@ -82,8 +95,7 @@ if (args._[1].startsWith('0')) {
   process.exit(1)
 }
 
-const crc = require('./crc.js')
-const encoded = crc.crc(args._[0], args._[1], args.check)
+const encoded = crc(args._[0], args._[1], args.check)
 
 if (!args.short) {
   console.log(`${encoded.divisionSteps.join('\n')}\n`)

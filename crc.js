@@ -46,4 +46,17 @@ const crc = (data, generator, check) => {
   return crc
 }
 
-module.exports = { crc }
+const crcPolynomials = {
+  'crc-1': '11',
+  'crc-3-gsm': '1011',
+  'crc-4-itu': '10011',
+  'crc-5-epc': '101001',
+  'crc-8': '100000111',
+  'crc-10': '11000110011',
+  'crc-12': '1100000001111',
+  'crc-16': '11000000000000101',
+  'crc-ccitt': '10001000000100001',
+  'crc-32': '100000100110000010001110110110111'
+}
+
+module.exports = { crc, crcPolynomials }
